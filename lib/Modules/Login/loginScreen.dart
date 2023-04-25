@@ -86,6 +86,14 @@ class LoginScreen extends StatelessWidget {
                             }
                             return null;
                           },
+                          submit: (value) {
+                            if (formkey.currentState?.validate() == true) {
+                              LoginCubit.get(context).userLogin(
+                                  email: emailController.text,
+                                  password: passwordController.text);
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(
                           height: 35,

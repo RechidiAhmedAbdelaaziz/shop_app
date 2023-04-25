@@ -14,7 +14,10 @@ class DioHelper {
       required Map<String, dynamic> query,
       String lang = 'ar',
       String? token}) async {
-    dio.options = BaseOptions(headers: {'lang': lang, 'Authorization': token});
+    dio.options.headers = {
+      'Authorization': token,
+      'lang': lang,
+    };
     return await dio.get(
       url,
       queryParameters: query,
@@ -27,7 +30,10 @@ class DioHelper {
       required Map<String, dynamic> data,
       String lang = 'ar',
       String? token}) async {
-    dio.options = BaseOptions(headers: {'lang': lang, 'Authorization': token});
+    dio.options.headers = {
+      'Authorization': token,
+      'lang': lang,
+    };
     return await dio.post(url, queryParameters: query, data: data);
   }
 }
