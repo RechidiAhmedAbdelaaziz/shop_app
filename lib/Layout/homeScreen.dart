@@ -1,29 +1,20 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:shop_app/Modules/Login/loginScreen.dart';
-import 'package:shop_app/Shared/Compenents/compenents.dart';
-import 'package:shop_app/Shared/Network/Local/cache_helper.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/Layout/Shop_Cubit/shop_cubit.dart';
+import 'package:shop_app/Layout/Shop_Cubit/shop_states.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Container(
-        color: Colors.indigo,
-        child: Center(
-          child: TextButton(
-            child: Text('SIGN OUT'),
-            onPressed: () {
-              CacheHelper.clearData(key: 'token');
-              replaceWith(context: context, widget: LoginScreen());
-            },
-          ),
-        ),
-      ),
+    return BlocConsumer<ShopCubit,ShopStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Scaffold();
+      },
     );
   }
 }

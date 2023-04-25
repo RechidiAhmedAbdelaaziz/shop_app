@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shop_app/Shared/Styles/colors.dart';
 
-
 ThemeData lightTheme = ThemeData(
   primarySwatch: defaultColor,
   scaffoldBackgroundColor: Colors.white,
@@ -23,10 +22,9 @@ ThemeData lightTheme = ThemeData(
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: Colors.deepOrange,
+    selectedItemColor: defaultColor,
     elevation: 22.6,
   ),
-  
   textTheme: const TextTheme(
     bodyLarge: TextStyle(
       fontSize: 18,
@@ -34,9 +32,7 @@ ThemeData lightTheme = ThemeData(
       color: Colors.black,
     ),
   ),
-  
 );
-
 
 
 ThemeData darkTheme = ThemeData(
@@ -59,7 +55,7 @@ ThemeData darkTheme = ThemeData(
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: HexColor('333739'),
     type: BottomNavigationBarType.fixed,
-    selectedItemColor: Colors.deepOrange,
+    selectedItemColor: defaultColor,
     unselectedItemColor: Colors.grey,
     elevation: 12.6,
   ),
@@ -71,5 +67,4 @@ ThemeData darkTheme = ThemeData(
     ),
   ),
   fontFamily: 'test',
-
 );

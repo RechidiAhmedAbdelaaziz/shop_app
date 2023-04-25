@@ -6,14 +6,6 @@ class CacheHelper {
       sharedPerfrences = await SharedPreferences.getInstance();
   }
 
-
-  static bool? getInf({required String key})  {
-    return  sharedPerfrences?.getBool(key);
-  }
-
-
-
-
   static Future<bool?> saveData({
     required String key,
     required value,
@@ -25,6 +17,9 @@ class CacheHelper {
     
   }
 
+  static bool? getInf({required String key})  {
+    return  sharedPerfrences?.getBool(key);
+  }
   static String? getData({required String key}) {
     return  sharedPerfrences?.getString(key);
   }

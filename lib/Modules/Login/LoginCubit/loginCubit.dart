@@ -25,12 +25,13 @@ class LoginCubit extends Cubit<LoginStates> {
         'password': password,
       },
     ).then((value) {
-      
       loginModel = LoginModel.fromJson(value.data);
       emit(LoginSuccessState(loginModel));
     }).catchError((error) {
-      print( 'Error is ${error.toString()}');
+      print('Error is ${error.toString()}');
       emit(LoginErrorState(error.toString()));
     });
   }
+
+ 
 }

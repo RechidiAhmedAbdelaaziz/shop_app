@@ -1,5 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/Layout/Shop_Cubit/shop_cubit.dart';
 import 'package:shop_app/Layout/homeScreen.dart';
 import 'package:shop_app/Modules/Login/loginScreen.dart';
 import 'package:shop_app/Modules/onBoarding/onboarding_screen.dart';
@@ -8,40 +11,49 @@ import 'package:shop_app/Shared/Network/Local/cache_helper.dart';
 import 'package:shop_app/Shared/Network/Remote/diohelper.dart';
 import 'package:shop_app/Shared/Styles/Themes/themes.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
-  DioHelper.init();
-  CacheHelper.init();
+  await DioHelper.init();
+  await CacheHelper.init();
   Widget widget;
-  bool? onBoarding = await CacheHelper.getInf(key: 'onBoarding');
-  print(onBoarding);
+  bool? onBoarding = CacheHelper.getInf(key: 'onBoarding');
   String? token = CacheHelper.getData(key: 'token');
   if (onBoarding == true) {
     if (token != null) {
-      widget = HomeScreen();
+      widget = const HomeScreen();
     } else {
-      widget = LoginScreen();
+      widget = const LoginScreen();
     }
   } else {
-    widget = OnBoardingScreen();
+    widget = const OnBoardingScreen();
   }
   runApp(MyApp(widget));
 }
 
 class MyApp extends StatelessWidget {
   Widget widget;
-  MyApp(this.widget);
+  MyApp(this.widget, {super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: widget,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.light,
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ShopCubit(),
+          )
+        ],
+        child: BlocConsumer(
+            listener: (context, state) {},
+            builder: (context, state) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                home: widget,
+                theme: lightTheme,
+                darkTheme: darkTheme,
+                themeMode: ThemeMode.light,
+              );
+            }));
   }
 }
