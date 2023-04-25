@@ -3,10 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/Layout/Shop_Cubit/shop_cubit.dart';
+import 'package:shop_app/Layout/Shop_Cubit/shop_states.dart';
 import 'package:shop_app/Layout/homeScreen.dart';
 import 'package:shop_app/Modules/Login/loginScreen.dart';
 import 'package:shop_app/Modules/onBoarding/onboarding_screen.dart';
 import 'package:shop_app/Shared/Compenents/blocobserver.dart';
+import 'package:shop_app/Shared/Compenents/constants.dart';
 import 'package:shop_app/Shared/Network/Local/cache_helper.dart';
 import 'package:shop_app/Shared/Network/Remote/diohelper.dart';
 import 'package:shop_app/Shared/Styles/Themes/themes.dart';
@@ -18,7 +20,7 @@ void main() async {
   await CacheHelper.init();
   Widget widget;
   bool? onBoarding = CacheHelper.getInf(key: 'onBoarding');
-  String? token = CacheHelper.getData(key: 'token');
+  token = CacheHelper.getData(key: 'token');
   if (onBoarding == true) {
     if (token != null) {
       widget = const HomeScreen();
@@ -33,7 +35,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   Widget widget;
-  MyApp(this.widget, {super.key});
+  
+  MyApp(this.widget,{super.key});
 
   // This widget is the root of your application.
   @override
@@ -41,10 +44,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => ShopCubit(),
+            create: (context) => ShopCubit()..getHomeData(token: token),
           )
         ],
-        child: BlocConsumer(
+        child: BlocConsumer<ShopCubit, ShopStates>(
             listener: (context, state) {},
             builder: (context, state) {
               return MaterialApp(

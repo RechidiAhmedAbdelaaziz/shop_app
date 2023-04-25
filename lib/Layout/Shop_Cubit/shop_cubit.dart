@@ -5,6 +5,10 @@ import 'package:shop_app/Modules/Screens/Categories/categories_screen.dart';
 import 'package:shop_app/Modules/Screens/Favorites/favorites_screen.dart';
 import 'package:shop_app/Modules/Screens/Products/product_screen.dart';
 import 'package:shop_app/Modules/Screens/Settings/settings_screen.dart';
+import 'package:shop_app/Moldels/home_models.dart';
+import 'package:shop_app/Shared/Compenents/constants.dart';
+import 'package:shop_app/Shared/Network/Remote/diohelper.dart';
+import 'package:shop_app/Shared/Network/end_points.dart';
 
 class ShopCubit extends Cubit<ShopStates> {
   ShopCubit() : super(InitialState());
@@ -21,5 +25,22 @@ class ShopCubit extends Cubit<ShopStates> {
   void changeBottomScreen(int index) {
     currentIndex = index;
     emit(ChangeBottomNavState());
+  }
+
+  HomeModel? homeModel;
+  void getHomeData({String? token}) {
+    emit(LoadingHomeDataState());
+    DioHelper.getData(
+      token: token,
+      url: HOME,
+    ).then((value) {
+      homeModel = HomeModel.fromJson(value.data);
+      
+      print(homeModel?.data.banners.toString());
+
+      emit(SuccessHomeDataState());
+    }).catchError((error) {
+      emit(ErorrHomeDataState(error));
+    });
   }
 }
