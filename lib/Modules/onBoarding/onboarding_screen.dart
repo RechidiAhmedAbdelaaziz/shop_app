@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/Modules/Login/loginScreen.dart';
 import 'package:shop_app/Shared/Compenents/compenents.dart';
+import 'package:shop_app/Shared/Network/Local/cache_helper.dart';
 import 'package:shop_app/Shared/Styles/colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -39,7 +40,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           actions: [
             TextButton(
                 onPressed: () {
-                  navigateTo(context: context, widget: const LoginScreen());
+                  CacheHelper.saveData(
+                    key: 'onBoarding',
+                    value: true,
+                  ).then((value) {
+                    print(CacheHelper.getInf(key: 'onBoarding'));
+                    replaceWith(context: context, widget: const LoginScreen());
+                  });
                 },
                 child: const Text('Skip'))
           ],
@@ -91,6 +98,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             );
                           }
                         : () {
+                            CacheHelper.saveData(
+                              key: 'onBoarding',
+                              value: true,
+                            );
                             replaceWith(
                                 context: context, widget: const LoginScreen());
                           },

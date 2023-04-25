@@ -3,11 +3,12 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shop_app/Layout/homeScreen.dart';
 import 'package:shop_app/Modules/Login/LoginCubit/loginCubit.dart';
 import 'package:shop_app/Modules/Login/LoginCubit/loginStates.dart';
 import 'package:shop_app/Modules/Register/registerScreen.dart';
 import 'package:shop_app/Shared/Compenents/compenents.dart';
+import 'package:shop_app/Shared/Network/Local/cache_helper.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -22,8 +23,14 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             if (state.loginModel.status) {
+              print(state.loginModel.data?.token);
+              CacheHelper.saveData(
+                      key: 'token', value: state.loginModel.data!.token!)
+                  .then((value) {
+                replaceWith(context: context, widget: HomeScreen());
+              });
             } else {
-              print(state.loginModel.message);
+              
             }
           }
         },
