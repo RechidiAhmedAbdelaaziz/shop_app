@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class HomeModel {
   late bool status;
@@ -10,14 +9,14 @@ class HomeModel {
 }
 
 class HomeDataModel {
-  late List<ProductModel> Products = [];
+  late List<ProductModel> products = [];
   late List<BannerModel> banners = [];
   HomeDataModel.fromJson(Map<String, dynamic> json) {
     json['banners']?.forEach((element) {
       banners.add(BannerModel.fromJson(element));
     });
     json['products']?.forEach((element) {
-      Products.add(ProductModel.fromJson(element));
+      products.add(ProductModel.fromJson(element));
     });
   }
 }

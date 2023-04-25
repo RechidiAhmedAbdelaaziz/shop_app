@@ -12,7 +12,7 @@ class DioHelper {
   static Future<Response> getData(
       {required String url,
       Map<String, dynamic>? query,
-      String lang = 'ar',
+      String lang = 'en',
       String? token}) async {
     dio.options.headers = {
       'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ class DioHelper {
       {required String url,
       Map<String, dynamic>? query,
       required Map<String, dynamic> data,
-      String lang = 'ar',
+      String lang = 'en',
       String? token}) async {
     dio.options.headers = {
       'Content-Type': 'application/json',

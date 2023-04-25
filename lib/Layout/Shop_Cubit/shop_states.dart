@@ -12,3 +12,5 @@ class ErorrHomeDataState extends ShopStates {
   final String erorr;
   ErorrHomeDataState(this.erorr);
 }
+
+class FavoriteChangeState extends ShopStates{}

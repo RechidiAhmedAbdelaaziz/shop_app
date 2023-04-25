@@ -17,11 +17,9 @@ class CacheHelper {
     
   }
 
-  static bool? getInf({required String key})  {
-    return  sharedPerfrences?.getBool(key);
-  }
-  static String? getData({required String key}) {
-    return  sharedPerfrences?.getString(key);
+  
+  static dynamic getData({required String key}) {
+    return  sharedPerfrences?.get(key);
   }
 
   

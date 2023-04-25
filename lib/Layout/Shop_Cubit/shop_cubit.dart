@@ -6,7 +6,6 @@ import 'package:shop_app/Modules/Screens/Favorites/favorites_screen.dart';
 import 'package:shop_app/Modules/Screens/Products/product_screen.dart';
 import 'package:shop_app/Modules/Screens/Settings/settings_screen.dart';
 import 'package:shop_app/Moldels/home_models.dart';
-import 'package:shop_app/Shared/Compenents/constants.dart';
 import 'package:shop_app/Shared/Network/Remote/diohelper.dart';
 import 'package:shop_app/Shared/Network/end_points.dart';
 
@@ -17,10 +16,10 @@ class ShopCubit extends Cubit<ShopStates> {
 
   int currentIndex = 0;
   List<Widget> bottomScreens = [
-    ProductsScreen(),
+    const ProductsScreen(),
     CategoriesScreen(),
-    FavoritesScreen(),
-    SettingsScreen(),
+    const FavoritesScreen(),
+    const SettingsScreen(),
   ];
   void changeBottomScreen(int index) {
     currentIndex = index;
@@ -36,12 +35,15 @@ class ShopCubit extends Cubit<ShopStates> {
     ).then((value) {
       homeModel = HomeModel.fromJson(value.data);
 
-      print(homeModel?.data.banners[0].image.toString());
-
       emit(SuccessHomeDataState());
     }).catchError((error) {
       print(error.toString());
       emit(ErorrHomeDataState(error.toString()));
     });
+  }
+
+  void setFav({required bool inFav}) {
+    inFav = !inFav;
+    emit(FavoriteChangeState());
   }
 }

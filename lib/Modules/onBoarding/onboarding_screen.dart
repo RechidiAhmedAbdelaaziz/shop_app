@@ -44,7 +44,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     key: 'onBoarding',
                     value: true,
                   ).then((value) {
-                    print(CacheHelper.getInf(key: 'onBoarding'));
+                    print(CacheHelper.getData(key: 'onBoarding'));
                     replaceWith(context: context, widget: const LoginScreen());
                   });
                 },

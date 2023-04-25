@@ -19,7 +19,7 @@ void main() async {
   await DioHelper.init();
   await CacheHelper.init();
   Widget widget;
-  bool? onBoarding = CacheHelper.getInf(key: 'onBoarding');
+  bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
   token = CacheHelper.getData(key: 'token');
   if (onBoarding == true) {
     if (token != null) {
