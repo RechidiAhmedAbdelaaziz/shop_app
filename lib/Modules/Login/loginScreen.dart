@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,12 +71,17 @@ class LoginScreen extends StatelessWidget {
                           type: TextInputType.visiblePassword,
                           prefix: const Icon(Icons.key_outlined),
                           suffix: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.visibility)),
+                              onPressed: () {
+                                LoginCubit.get(context).showPass();
+                              },
+                              icon: LoginCubit.get(context).isShown
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off)),
                           control: passwordController,
                           lable: 'Password',
+                          secure: LoginCubit.get(context).isShown,
                           valid: (value) {
-                            if (value!.length < 8) {
+                            if (value!.length < 5) {
                               return 'The password is too short';
                             }
                             return null;
@@ -108,9 +115,9 @@ class LoginScreen extends StatelessWidget {
                                 onPressed: () {
                                   navigateTo(
                                       context: context,
-                                      widget: RegisterScreen());
+                                      widget: const RegisterScreen());
                                 },
-                                child: Text('Register'))
+                                child: const Text('Register'))
                           ],
                         )
                       ],

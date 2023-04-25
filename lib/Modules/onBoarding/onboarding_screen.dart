@@ -39,9 +39,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           actions: [
             TextButton(
                 onPressed: () {
-                  navigateTo(context: context, widget: LoginScreen());
+                  navigateTo(context: context, widget: const LoginScreen());
                 },
-                child: Text('Skip'))
+                child: const Text('Skip'))
           ],
         ),
         body: Padding(
@@ -92,7 +92,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           }
                         : () {
                             replaceWith(
-                                context: context, widget: LoginScreen());
+                                context: context, widget: const LoginScreen());
                           },
                     child: const Icon(Icons.arrow_forward_ios),
                   )
