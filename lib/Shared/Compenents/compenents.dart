@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 
 void navigateTo({required context, required Widget widget}) {
-  
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => widget,
-        ));
-  
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ));
 }
 
 void replaceWith({required context, required Widget widget}) {
-  
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => widget,
-        ),
-        (route) => false);
-  
+  Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+      (route) => false);
 }
 
 typedef Valid = String? Function(String? value);

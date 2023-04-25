@@ -3,6 +3,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/Modules/Login/LoginCubit/loginCubit.dart';
 import 'package:shop_app/Modules/Login/LoginCubit/loginStates.dart';
 import 'package:shop_app/Modules/Register/registerScreen.dart';
@@ -18,7 +19,14 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is LoginSuccessState) {
+            if (state.loginModel.status) {
+            } else {
+              print(state.loginModel.message);
+            }
+          }
+        },
         builder: (context, state) {
           var formkey = GlobalKey<FormState>();
           return Scaffold(

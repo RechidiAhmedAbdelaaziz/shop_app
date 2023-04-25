@@ -2,6 +2,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/Modules/Login/LoginCubit/loginStates.dart';
+import 'package:shop_app/Moldels/login_model.dart';
 import 'package:shop_app/Shared/Network/Remote/diohelper.dart';
 import 'package:shop_app/Shared/Network/end_points.dart';
 
@@ -11,9 +12,10 @@ class LoginCubit extends Cubit<LoginStates> {
   bool isShown = true;
   void showPass() {
     isShown = !isShown;
-    emit(LoginInitialState());
+    emit(LoginPassVisibilityState());
   }
 
+  late LoginModel loginModel;
   void userLogin({required String email, required String password}) {
     emit(LoginLoadingState());
     DioHelper.postData(
@@ -23,10 +25,11 @@ class LoginCubit extends Cubit<LoginStates> {
         'password': password,
       },
     ).then((value) {
-      print(value.toString());
-      emit(LoginSuccessState());
+      
+      loginModel = LoginModel.fromJson(value.data);
+      emit(LoginSuccessState(loginModel));
     }).catchError((error) {
-      print(error.toString());
+      print( 'Error is ${error.toString()}');
       emit(LoginErrorState(error.toString()));
     });
   }
