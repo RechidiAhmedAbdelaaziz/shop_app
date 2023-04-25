@@ -14,10 +14,10 @@ class HomeDataModel {
   late List<BannerModel> banners = [];
   HomeDataModel.fromJson(Map<String, dynamic> json) {
     json['banners']?.forEach((element) {
-      banners.add(element);
+      banners.add(BannerModel.fromJson(element));
     });
     json['products']?.forEach((element) {
-      Products.add(element);
+      Products.add(ProductModel.fromJson(element));
     });
   }
 }
