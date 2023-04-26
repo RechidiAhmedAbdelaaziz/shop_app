@@ -26,16 +26,7 @@ class ProductsScreen extends StatelessWidget {
                 backgroundColor: Colors.orange,
                 textColor: Colors.white,
                 fontSize: 13.0);
-          }else {
-            Fluttertoast.showToast(
-                msg: state.changeFavModel.message,
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 3,
-                backgroundColor: Colors.green,
-                textColor: Colors.white,
-                fontSize: 13.0);
-          }
+          } 
         }
       },
       builder: (context, state) {
@@ -56,7 +47,6 @@ class ProductsScreen extends StatelessWidget {
 Widget widgetBuilder(
     HomeModel? hModel, CategoriesModel? cModel, BuildContext context) {
   return SingleChildScrollView(
-    physics: const BouncingScrollPhysics(),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -80,47 +70,55 @@ Widget widgetBuilder(
               autoPlayCurve: Curves.fastLinearToSlowEaseIn,
               scrollDirection: Axis.horizontal),
         ),
-        const SizedBox(
-          height: 12,
-        ),
-        const Text(
-          'Categories :',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
-        ),
-        SizedBox(
-          height: 120,
-          child: ListView.separated(
-            physics: const BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) =>
-                buildCategory(cModel.data.data[index]),
-            separatorBuilder: (context, index) => const SizedBox(
-              width: 10,
-            ),
-            itemCount: cModel!.data.data.length,
+        SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 12,
+              ),
+              const Text(
+                'Categories :',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+              ),
+              SizedBox(
+                height: 120,
+                child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) =>
+                      buildCategory(cModel.data.data[index]),
+                  separatorBuilder: (context, index) => const SizedBox(
+                    width: 10,
+                  ),
+                  itemCount: cModel!.data.data.length,
+                ),
+              ),
+              const Text(
+                'New Products :',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Container(
+                color: Colors.grey[300],
+                child: GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 1,
+                  crossAxisSpacing: 1,
+                  childAspectRatio: 1 / 2.3,
+                  children: List.generate(hModel.data.products.length, (index) {
+                    return gridProductItem(hModel.data.products[index], context);
+                  }),
+                ),
+              ),
+            ],
           ),
-        ),
-        const Text(
-          'New Products :',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Container(
-          color: Colors.grey[300],
-          child: GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            mainAxisSpacing: 1,
-            crossAxisSpacing: 1,
-            childAspectRatio: 1 / 2.3,
-            children: List.generate(hModel.data.products.length, (index) {
-              return gridProductItem(hModel.data.products[index], context);
-            }),
-          ),
-        ),
+        )
       ],
     ),
   );
@@ -190,7 +188,6 @@ Widget gridProductItem(ProductModel model, context) {
               ),
           ],
         ),
-        
         Padding(
           padding: const EdgeInsets.all(10),
           child: Column(
@@ -204,7 +201,6 @@ Widget gridProductItem(ProductModel model, context) {
                   height: 1.0,
                 ),
               ),
-              
               Row(
                 children: [
                   Text(

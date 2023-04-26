@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 class ChangeFavModel {
   late bool status;
   late String message;
@@ -6,3 +8,6 @@ class ChangeFavModel {
     message = json['message'];
   }
 }
+
+
+

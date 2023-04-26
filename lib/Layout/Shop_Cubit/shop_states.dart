@@ -24,9 +24,19 @@ class ErorrCategoriesDataState extends ShopStates {
   ErorrCategoriesDataState(this.erorr);
 }
 
+
+class LoadingFavoritesDataState extends ShopStates {}
+
+class SuccessFavoritesDataState extends ShopStates {}
+
+class ErorrFavoritesDataState extends ShopStates {
+  final String erorr;
+  ErorrFavoritesDataState(this.erorr);
+}
+
+
+
 class InitialChangeFav extends ShopStates {}
-
-
 
 class SuccessChangeFavState extends ShopStates {
   final ChangeFavModel changeFavModel;

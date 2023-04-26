@@ -37,7 +37,7 @@ class ProductModel {
   late dynamic discount;
   late String image;
   late String name;
-  late bool inFav, inCart;
+  late bool? inFav, inCart;
   ProductModel.fromJson(Map<String, dynamic>? json) {
     id = json?['id'];
     price = json?['price'];

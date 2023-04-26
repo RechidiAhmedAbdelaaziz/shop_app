@@ -9,6 +9,7 @@ import 'package:shop_app/Modules/Screens/Products/product_screen.dart';
 import 'package:shop_app/Modules/Screens/Settings/settings_screen.dart';
 import 'package:shop_app/Moldels/categories_model.dart';
 import 'package:shop_app/Moldels/change_favModel.dart';
+import 'package:shop_app/Moldels/favoritesModel.dart';
 import 'package:shop_app/Moldels/home_models.dart';
 import 'package:shop_app/Shared/Compenents/constants.dart';
 import 'package:shop_app/Shared/Network/Remote/diohelper.dart';
@@ -23,7 +24,7 @@ class ShopCubit extends Cubit<ShopStates> {
   List<Widget> bottomScreens = [
     const ProductsScreen(),
     const CategoriesScreen(),
-    const FavoritesScreen(),
+    FavoritesScreen(),
     const SettingsScreen(),
   ];
   void changeBottomScreen(int index) {
@@ -42,10 +43,10 @@ class ShopCubit extends Cubit<ShopStates> {
       homeModel = HomeModel.fromJson(value.data);
       homeModel?.data.products.forEach(
         (element) {
-          favorites.addAll({element.id: element.inFav});
+          favorites.addAll({element.id: element.inFav!});
         },
       );
-      print(favorites);
+      getFavoritesData();
       emit(SuccessHomeDataState());
     }).catchError((error) {
       print(error.toString());
@@ -70,10 +71,10 @@ class ShopCubit extends Cubit<ShopStates> {
       changeFavModel = ChangeFavModel.fromJson(value.data);
       if (!changeFavModel.status) {
         favorites[id] = changeFavModel.status;
-        
-      } 
-        emit(SuccessChangeFavState(changeFavModel));
-      
+      } else {
+        getFavoritesData();
+      }
+      emit(SuccessChangeFavState(changeFavModel));
     }).catchError((error) {
       favorites[id] = !favorites[id]!;
       print(error.toString());
@@ -81,8 +82,20 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
+  late FavoritesModel favoritesModel;
+  void getFavoritesData() {
+    emit(LoadingFavoritesDataState());
+    DioHelper.getData(url: FAVORITES, token: token).then((value) {
+      favoritesModel = FavoritesModel.fromJson(value.data);
+      emit(SuccessFavoritesDataState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErorrFavoritesDataState(error.toString()));
+    });
+  }
+
   CategoriesModel? categoriesModel;
-  void getCategoriesData({String? token}) {
+  void getCategoriesData() {
     emit(LoadingCategoriesDataState());
     DioHelper.getData(url: GET_CATEGORIES).then((value) {
       categoriesModel = CategoriesModel.fromJson(value.data);
