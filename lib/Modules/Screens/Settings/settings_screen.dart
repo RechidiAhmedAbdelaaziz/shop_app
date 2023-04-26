@@ -20,6 +20,7 @@ class SettingsScreen extends StatelessWidget {
     return BlocConsumer<ShopCubit, ShopStates>(
       listener: (context, state) {},
       builder: (context, state) {
+        
         var model = ShopCubit.get(context).user;
         nameController.text = (model.data!.name)!;
         emailController.text = (model.data!.email)!;
@@ -37,9 +38,10 @@ class SettingsScreen extends StatelessWidget {
                   type: TextInputType.name,
                   prefix: const Icon(Icons.person),
                   valid: (value) {
-                    if (true) {
-                      return 'message';
+                    if (model.message?.contains('name') == true) {
+                      return model.message;
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(
@@ -51,9 +53,10 @@ class SettingsScreen extends StatelessWidget {
                   type: TextInputType.emailAddress,
                   prefix: const Icon(Icons.email),
                   valid: (value) {
-                    if (true) {
-                      return 'message';
+                    if (model.message?.contains('email') == true) {
+                      return model.message;
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(
@@ -65,9 +68,10 @@ class SettingsScreen extends StatelessWidget {
                   type: TextInputType.phone,
                   prefix: const Icon(Icons.phone),
                   valid: (value) {
-                    if (true) {
-                      return 'message';
+                    if (model.message?.contains('phone') == true) {
+                      return model.message;
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(

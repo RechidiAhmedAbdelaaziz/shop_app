@@ -25,7 +25,7 @@ class ShopCubit extends Cubit<ShopStates> {
   List<Widget> bottomScreens = [
     const ProductsScreen(),
     const CategoriesScreen(),
-    FavoritesScreen(),
+    const FavoritesScreen(),
     const SettingsScreen(),
   ];
   void changeBottomScreen(int index) {

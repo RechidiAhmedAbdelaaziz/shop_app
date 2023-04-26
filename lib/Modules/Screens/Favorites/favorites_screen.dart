@@ -10,6 +10,8 @@ import 'package:shop_app/Shared/Compenents/constants.dart';
 import 'package:shop_app/Shared/Styles/colors.dart';
 
 class FavoritesScreen extends StatelessWidget {
+  const FavoritesScreen({super.key});
+
   
 
   @override
@@ -21,7 +23,7 @@ class FavoritesScreen extends StatelessWidget {
         return ConditionalBuilder(
           condition: cubit.favoritesModel != null ,
           builder: (context) => ListView.separated(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             separatorBuilder: (context, index) => myDivider(),
             itemBuilder: (context, index) =>
                 buildFavItem(cubit.favoritesModel.data.products[index], context),

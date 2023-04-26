@@ -3,12 +3,14 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/Layout/Shop_Cubit/shop_cubit.dart';
 import 'package:shop_app/Layout/homeScreen.dart';
 import 'package:shop_app/Modules/Login/LoginCubit/loginCubit.dart';
 import 'package:shop_app/Modules/Login/LoginCubit/loginStates.dart';
 import 'package:shop_app/Modules/Register/registerScreen.dart';
 import 'package:shop_app/Shared/Compenents/compenents.dart';
+import 'package:shop_app/Shared/Compenents/constants.dart';
 import 'package:shop_app/Shared/Network/Local/cache_helper.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -25,12 +27,23 @@ class LoginScreen extends StatelessWidget {
           if (state is LoginSuccessState) {
             if (state.loginModel.status) {
               CacheHelper.saveData(
-                      key: 'token', value: state.loginModel.data!.token!)
+                      key: 'token',
+                      value: state.loginModel.data!.token.toString())
                   .then((value) {
+                token = state.loginModel.data!.token;
                 ShopCubit.get(context).currentIndex = 0;
                 replaceWith(context: context, widget: const HomeScreen());
               });
-            } else {}
+            } else {
+              Fluttertoast.showToast(
+                  msg: state.loginModel.message.toString(),
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 2,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 14.0);
+            }
           }
         },
         builder: (context, state) {
