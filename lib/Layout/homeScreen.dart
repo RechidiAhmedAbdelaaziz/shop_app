@@ -21,9 +21,9 @@ class HomeScreen extends StatelessWidget {
             actions: [
               IconButton(
                   onPressed: () {
-                    navigateTo(context: context, widget: SearchScreen());
+                    navigateTo(context: context, widget: const SearchScreen());
                   },
-                  icon: Icon(Icons.search))
+                  icon: const Icon(Icons.search))
             ],
           ),
           body: cubit.bottomScreens[cubit.currentIndex],

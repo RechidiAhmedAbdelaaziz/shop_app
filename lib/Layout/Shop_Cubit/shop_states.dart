@@ -13,4 +13,12 @@ class ErorrHomeDataState extends ShopStates {
   ErorrHomeDataState(this.erorr);
 }
 
-class FavoriteChangeState extends ShopStates{}
+
+class LoadingCategoriesDataState extends ShopStates {}
+
+class SuccessCategoriesDataState extends ShopStates {}
+
+class ErorrCategoriesDataState extends ShopStates {
+  final String erorr;
+  ErorrCategoriesDataState(this.erorr);
+}

@@ -2,9 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 import 'package:shop_app/Layout/Shop_Cubit/shop_cubit.dart';
 import 'package:shop_app/Layout/Shop_Cubit/shop_states.dart';
+import 'package:shop_app/Moldels/categories_model.dart';
 import 'package:shop_app/Moldels/home_models.dart';
 import 'package:shop_app/Shared/Styles/colors.dart';
 
@@ -18,8 +18,8 @@ class ProductsScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = ShopCubit.get(context);
         return ConditionalBuilder(
-          condition: cubit.homeModel != null,
-          builder: (context) => ProductBuilder(cubit.homeModel),
+          condition: cubit.homeModel != null && cubit.categoriesModel != null,
+          builder: (context) => widgetBuilder(cubit.homeModel,cubit.categoriesModel),
           fallback: (context) => const Center(
             child: CircularProgressIndicator(),
           ),
@@ -29,13 +29,14 @@ class ProductsScreen extends StatelessWidget {
   }
 }
 
-Widget ProductBuilder(HomeModel? model) {
+Widget widgetBuilder(HomeModel? hModel,CategoriesModel? cModel) {
   return SingleChildScrollView(
     physics: const BouncingScrollPhysics(),
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CarouselSlider(
-          items: model!.data.banners.map((e) {
+          items: hModel!.data.banners.map((e) {
             return Image(
               image: NetworkImage(e.image),
               width: double.infinity,
@@ -55,7 +56,29 @@ Widget ProductBuilder(HomeModel? model) {
               scrollDirection: Axis.horizontal),
         ),
         const SizedBox(
-          height: 25,
+          height: 12,
+        ),
+        const Text(
+          'Categories :',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+        ),
+        SizedBox(
+          height: 120,
+          child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) => buildCategory(cModel.data.data[index]),
+            separatorBuilder: (context, index) => const SizedBox(width: 10,),
+            itemCount: cModel!.data.data.length,
+        
+          ),
+        ),
+        const Text(
+          'New Products :',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+        ),
+        const SizedBox(
+          height: 5,
         ),
         Container(
           color: Colors.grey[300],
@@ -66,8 +89,8 @@ Widget ProductBuilder(HomeModel? model) {
             mainAxisSpacing: 1,
             crossAxisSpacing: 1,
             childAspectRatio: 1 / 1.45,
-            children: List.generate(model.data.products.length, (index) {
-              return gridProductItem(model.data.products[index]);
+            children: List.generate(hModel.data.products.length, (index) {
+              return gridProductItem(hModel.data.products[index]);
             }),
           ),
         ),
@@ -75,6 +98,37 @@ Widget ProductBuilder(HomeModel? model) {
     ),
   );
 }
+
+Widget buildCategory(CategoryDataModel? model) => Container(
+    margin: const EdgeInsets.only(bottom: 8, top: 5),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Image(
+              image: NetworkImage(
+                  '${model?.image}'),
+              height: 100,
+              width: 100,
+              fit: BoxFit.cover,
+            ),
+            Container(
+                width: 100,
+                color: Colors.black.withOpacity(0.8),
+                child: Text(
+                  '${model?.name}',
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(color: Colors.white),
+                )),
+          ],
+        ),
+      ],
+    ),
+  );
 
 Widget gridProductItem(ProductModel model) {
   return Container(
@@ -94,7 +148,7 @@ Widget gridProductItem(ProductModel model) {
             if (model.discount != 0)
               Container(
                 decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 0, 0, 0.7),
+                  color: Color.fromRGBO(255, 0, 0, 1),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                 margin: const EdgeInsets.only(bottom: 10.0),

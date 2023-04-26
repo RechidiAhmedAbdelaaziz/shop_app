@@ -1,11 +1,13 @@
+// ignore_for_file: avoid_print
+
 import 'package:shop_app/Modules/Login/loginScreen.dart';
 import 'package:shop_app/Shared/Compenents/compenents.dart';
 import 'package:shop_app/Shared/Network/Local/cache_helper.dart';
 
-void SignOut(context) {
+void signOut(context) {
   CacheHelper.clearData(key: 'token').then((value) {
     if (value == true) {
-      replaceWith(context: context, widget: LoginScreen());
+      replaceWith(context: context, widget: const LoginScreen());
     }
   });
 }

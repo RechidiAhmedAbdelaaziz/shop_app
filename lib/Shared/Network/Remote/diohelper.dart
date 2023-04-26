@@ -4,9 +4,9 @@ class DioHelper {
   static late Dio dio;
   static init() {
     dio = Dio(BaseOptions(
-        baseUrl: 'https://student.valuxapps.com/api/',
-        receiveDataWhenStatusError: true,
-        headers: {'Content-Type': 'application/json'}));
+      baseUrl: 'https://student.valuxapps.com/api/',
+      receiveDataWhenStatusError: true,
+    ));
   }
 
   static Future<Response> getData(

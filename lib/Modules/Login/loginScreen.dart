@@ -23,11 +23,10 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             if (state.loginModel.status) {
-              print(state.loginModel.data?.token);
               CacheHelper.saveData(
                       key: 'token', value: state.loginModel.data!.token!)
                   .then((value) {
-                replaceWith(context: context, widget: HomeScreen());
+                replaceWith(context: context, widget: const HomeScreen());
               });
             } else {
               
