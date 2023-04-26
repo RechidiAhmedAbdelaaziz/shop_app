@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/Layout/Shop_Cubit/shop_cubit.dart';
 import 'package:shop_app/Layout/Shop_Cubit/shop_states.dart';
 import 'package:shop_app/Moldels/categories_model.dart';
@@ -14,12 +15,35 @@ class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopCubit, ShopStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is SuccessChangeFavState) {
+          if (!state.changeFavModel.status) {
+            Fluttertoast.showToast(
+                msg: state.changeFavModel.message,
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 3,
+                backgroundColor: Colors.orange,
+                textColor: Colors.white,
+                fontSize: 13.0);
+          }else {
+            Fluttertoast.showToast(
+                msg: state.changeFavModel.message,
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 3,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 13.0);
+          }
+        }
+      },
       builder: (context, state) {
         var cubit = ShopCubit.get(context);
         return ConditionalBuilder(
           condition: cubit.homeModel != null && cubit.categoriesModel != null,
-          builder: (context) => widgetBuilder(cubit.homeModel,cubit.categoriesModel),
+          builder: (context) =>
+              widgetBuilder(cubit.homeModel, cubit.categoriesModel, context),
           fallback: (context) => const Center(
             child: CircularProgressIndicator(),
           ),
@@ -29,7 +53,8 @@ class ProductsScreen extends StatelessWidget {
   }
 }
 
-Widget widgetBuilder(HomeModel? hModel,CategoriesModel? cModel) {
+Widget widgetBuilder(
+    HomeModel? hModel, CategoriesModel? cModel, BuildContext context) {
   return SingleChildScrollView(
     physics: const BouncingScrollPhysics(),
     child: Column(
@@ -67,10 +92,12 @@ Widget widgetBuilder(HomeModel? hModel,CategoriesModel? cModel) {
           child: ListView.separated(
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => buildCategory(cModel.data.data[index]),
-            separatorBuilder: (context, index) => const SizedBox(width: 10,),
+            itemBuilder: (context, index) =>
+                buildCategory(cModel.data.data[index]),
+            separatorBuilder: (context, index) => const SizedBox(
+              width: 10,
+            ),
             itemCount: cModel!.data.data.length,
-        
           ),
         ),
         const Text(
@@ -88,9 +115,9 @@ Widget widgetBuilder(HomeModel? hModel,CategoriesModel? cModel) {
             crossAxisCount: 2,
             mainAxisSpacing: 1,
             crossAxisSpacing: 1,
-            childAspectRatio: 1 / 1.45,
+            childAspectRatio: 1 / 2.3,
             children: List.generate(hModel.data.products.length, (index) {
-              return gridProductItem(hModel.data.products[index]);
+              return gridProductItem(hModel.data.products[index], context);
             }),
           ),
         ),
@@ -99,42 +126,41 @@ Widget widgetBuilder(HomeModel? hModel,CategoriesModel? cModel) {
   );
 }
 
-Widget buildCategory(CategoryDataModel? model) => Container(
-    margin: const EdgeInsets.only(bottom: 8, top: 5),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Image(
-              image: NetworkImage(
-                  '${model?.image}'),
-              height: 100,
-              width: 100,
-              fit: BoxFit.cover,
-            ),
-            Container(
+Widget buildCategory(CategoryDataModel model) => Container(
+      margin: const EdgeInsets.only(bottom: 8, top: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Image(
+                image: NetworkImage(model.image),
+                height: 100,
                 width: 100,
-                color: Colors.black.withOpacity(0.8),
-                child: Text(
-                  '${model?.name}',
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.white),
-                )),
-          ],
-        ),
-      ],
-    ),
-  );
+                fit: BoxFit.cover,
+              ),
+              Container(
+                  width: 100,
+                  color: Colors.black.withOpacity(0.8),
+                  child: Text(
+                    model.name,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white),
+                  )),
+            ],
+          ),
+        ],
+      ),
+    );
 
-Widget gridProductItem(ProductModel model) {
+Widget gridProductItem(ProductModel model, context) {
   return Container(
     color: Colors.white,
     child: Column(
-      mainAxisSize: MainAxisSize.min,
+      // mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Stack(
@@ -144,6 +170,7 @@ Widget gridProductItem(ProductModel model) {
               image: NetworkImage(model.image),
               width: double.infinity,
               height: 350,
+              fit: BoxFit.contain,
             ),
             if (model.discount != 0)
               Container(
@@ -155,7 +182,7 @@ Widget gridProductItem(ProductModel model) {
                 child: Text(
                   'DISCOUNT ${model.discount.round().toString()}%',
                   style: const TextStyle(
-                    fontSize: 20.0,
+                    fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -163,8 +190,9 @@ Widget gridProductItem(ProductModel model) {
               ),
           ],
         ),
+        
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               Text(
@@ -176,6 +204,7 @@ Widget gridProductItem(ProductModel model) {
                   height: 1.0,
                 ),
               ),
+              
               Row(
                 children: [
                   Text(
@@ -199,13 +228,21 @@ Widget gridProductItem(ProductModel model) {
                     ),
                   const Spacer(),
                   IconButton(
-                      onPressed: () {},
-                      icon: model.inFav
-                          ? const Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                            )
-                          : const Icon(Icons.favorite_border))
+                      onPressed: () {
+                        ShopCubit.get(context).changeFav(id: model.id);
+                      },
+                      icon: CircleAvatar(
+                        backgroundColor:
+                            ShopCubit.get(context).favorites[model.id] == true
+                                ? defaultColor
+                                : Colors.grey,
+                        radius: 15,
+                        child: const Icon(
+                          Icons.favorite_border,
+                          size: 18,
+                          color: Colors.white,
+                        ),
+                      ))
                 ],
               ),
             ],

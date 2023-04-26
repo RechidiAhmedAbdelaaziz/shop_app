@@ -1,3 +1,5 @@
+import 'package:shop_app/Moldels/change_favModel.dart';
+
 abstract class ShopStates {}
 
 class InitialState extends ShopStates {}
@@ -13,7 +15,6 @@ class ErorrHomeDataState extends ShopStates {
   ErorrHomeDataState(this.erorr);
 }
 
-
 class LoadingCategoriesDataState extends ShopStates {}
 
 class SuccessCategoriesDataState extends ShopStates {}
@@ -22,3 +23,15 @@ class ErorrCategoriesDataState extends ShopStates {
   final String erorr;
   ErorrCategoriesDataState(this.erorr);
 }
+
+class InitialChangeFav extends ShopStates {}
+
+
+
+class SuccessChangeFavState extends ShopStates {
+  final ChangeFavModel changeFavModel;
+
+  SuccessChangeFavState(this.changeFavModel);
+}
+
+class ErrorChangeFavState extends ShopStates {}

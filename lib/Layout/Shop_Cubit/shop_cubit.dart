@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +8,9 @@ import 'package:shop_app/Modules/Screens/Favorites/favorites_screen.dart';
 import 'package:shop_app/Modules/Screens/Products/product_screen.dart';
 import 'package:shop_app/Modules/Screens/Settings/settings_screen.dart';
 import 'package:shop_app/Moldels/categories_model.dart';
+import 'package:shop_app/Moldels/change_favModel.dart';
 import 'package:shop_app/Moldels/home_models.dart';
+import 'package:shop_app/Shared/Compenents/constants.dart';
 import 'package:shop_app/Shared/Network/Remote/diohelper.dart';
 import 'package:shop_app/Shared/Network/end_points.dart';
 
@@ -30,6 +32,7 @@ class ShopCubit extends Cubit<ShopStates> {
   }
 
   HomeModel? homeModel;
+
   void getHomeData({String? token}) {
     emit(LoadingHomeDataState());
     DioHelper.getData(
@@ -37,11 +40,44 @@ class ShopCubit extends Cubit<ShopStates> {
       url: HOME,
     ).then((value) {
       homeModel = HomeModel.fromJson(value.data);
-
+      homeModel?.data.products.forEach(
+        (element) {
+          favorites.addAll({element.id: element.inFav});
+        },
+      );
+      print(favorites);
       emit(SuccessHomeDataState());
     }).catchError((error) {
       print(error.toString());
       emit(ErorrHomeDataState(error.toString()));
+    });
+  }
+
+  Map<int, bool> favorites = {};
+  late ChangeFavModel changeFavModel;
+  void changeFav({
+    required int id,
+  }) {
+    favorites[id] = !favorites[id]!;
+    emit(InitialChangeFav());
+    DioHelper.postData(
+      url: FAVORITES,
+      data: {
+        'product_id': id,
+      },
+      token: token,
+    ).then((value) {
+      changeFavModel = ChangeFavModel.fromJson(value.data);
+      if (!changeFavModel.status) {
+        favorites[id] = changeFavModel.status;
+        
+      } 
+        emit(SuccessChangeFavState(changeFavModel));
+      
+    }).catchError((error) {
+      favorites[id] = !favorites[id]!;
+      print(error.toString());
+      emit(ErrorChangeFavState());
     });
   }
 
