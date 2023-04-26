@@ -21,6 +21,12 @@ class ShopCubit extends Cubit<ShopStates> {
 
   static ShopCubit get(context) => BlocProvider.of(context);
 
+     bool isShown = true;
+  void showPass() {
+    isShown = !isShown;
+    emit(PassVisibilityState());
+  }
+  
   int currentIndex = 0;
   List<Widget> bottomScreens = [
     const ProductsScreen(),
@@ -115,6 +121,32 @@ class ShopCubit extends Cubit<ShopStates> {
     }).catchError((error) {
       print(error.toString());
       emit(ErorrProfileDataState(error.toString()));
+    });
+  }
+
+  void updateProfileData({
+    required String name,
+    required String email,
+    required String phone,
+    required String password,
+  }) {
+    emit(LoadingUpdateProfileDataState());
+    DioHelper.putData(
+      url: UPDATE_PROFILE,
+      token: token,
+      data: {
+        'email': email,
+        'password': password,
+        'name': name,
+        'phone': phone,
+      },
+    ).then((value) {
+      user = LoginModel.fromJson(value.data);
+      userPassword = password;
+      emit(SuccessUpdateProfileDataState(user));
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErorrUpdateProfileDataState(error.toString()));
     });
   }
 }

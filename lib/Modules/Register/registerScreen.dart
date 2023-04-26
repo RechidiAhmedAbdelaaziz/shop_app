@@ -23,19 +23,24 @@ class RegisterScreen extends StatelessWidget {
       create: (context) => RegisterCubit(),
       child: BlocConsumer<RegisterCubit, RegisterStates>(
         listener: (context, state) {
-          if (state is RegisterSuccessState){
-            if (state.loginModel.status){
+          if (state is RegisterSuccessState) {
+            if (state.loginModel.status) {
               CacheHelper.saveData(
                       key: 'token',
                       value: state.loginModel.data!.token.toString())
                   .then((value) {
-                token = state.loginModel.data!.token;
+                CacheHelper.saveData(key: 'password', value: passwordController)
+                    .then((value) {
+                  if (value == true) {
+                    userPassword = passwordController.text;
+                    token = state.loginModel.data!.token;
+                  }
+                });
+
                 ShopCubit.get(context).currentIndex = 0;
                 replaceWith(context: context, widget: const HomeScreen());
               });
-            }else{
-              
-            }
+            } else {}
           }
         },
         builder: (context, state) {

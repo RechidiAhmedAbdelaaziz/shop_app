@@ -30,6 +30,9 @@ class LoginScreen extends StatelessWidget {
                       key: 'token',
                       value: state.loginModel.data!.token.toString())
                   .then((value) {
+                CacheHelper.saveData(
+                    key: 'password', value: passwordController);
+                userPassword = passwordController.text;
                 token = state.loginModel.data!.token;
                 ShopCubit.get(context).currentIndex = 0;
                 replaceWith(context: context, widget: const HomeScreen());

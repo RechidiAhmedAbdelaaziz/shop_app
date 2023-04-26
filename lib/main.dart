@@ -21,6 +21,7 @@ void main() async {
   Widget widget;
   bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
   token = CacheHelper.getData(key: 'token');
+  userPassword = CacheHelper.getData(key: 'password');
   if (onBoarding == true) {
     if (token != null) {
       widget = const HomeScreen();

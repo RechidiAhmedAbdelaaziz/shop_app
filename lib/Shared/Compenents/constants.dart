@@ -28,3 +28,4 @@ void printFullText({required String text}) {
 }
 
 String? token = '';
+String? userPassword = '';
