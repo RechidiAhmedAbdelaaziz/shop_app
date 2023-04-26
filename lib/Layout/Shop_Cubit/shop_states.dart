@@ -6,19 +6,17 @@ class InitialState extends ShopStates {}
 
 class ChangeBottomNavState extends ShopStates {}
 
+
 class LoadingHomeDataState extends ShopStates {}
-
 class SuccessHomeDataState extends ShopStates {}
-
 class ErorrHomeDataState extends ShopStates {
   final String erorr;
   ErorrHomeDataState(this.erorr);
 }
 
+
 class LoadingCategoriesDataState extends ShopStates {}
-
 class SuccessCategoriesDataState extends ShopStates {}
-
 class ErorrCategoriesDataState extends ShopStates {
   final String erorr;
   ErorrCategoriesDataState(this.erorr);
@@ -26,22 +24,25 @@ class ErorrCategoriesDataState extends ShopStates {
 
 
 class LoadingFavoritesDataState extends ShopStates {}
-
 class SuccessFavoritesDataState extends ShopStates {}
-
 class ErorrFavoritesDataState extends ShopStates {
   final String erorr;
   ErorrFavoritesDataState(this.erorr);
 }
 
 
-
 class InitialChangeFav extends ShopStates {}
-
 class SuccessChangeFavState extends ShopStates {
   final ChangeFavModel changeFavModel;
 
   SuccessChangeFavState(this.changeFavModel);
 }
-
 class ErrorChangeFavState extends ShopStates {}
+
+
+class LoadingProfileDataState extends ShopStates {}
+class SuccessProfileDataState extends ShopStates {}
+class ErorrProfileDataState extends ShopStates {
+  final String erorr;
+  ErorrProfileDataState(this.erorr);
+}

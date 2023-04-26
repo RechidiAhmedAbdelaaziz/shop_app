@@ -35,8 +35,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   Widget widget;
-  
-  MyApp(this.widget,{super.key});
+
+  MyApp(this.widget, {super.key});
 
   // This widget is the root of your application.
   @override
@@ -44,7 +44,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => ShopCubit()..getHomeData(token: token)..getCategoriesData(),
+            create: (context) => ShopCubit()
+              ..getHomeData()
+              ..getCategoriesData()
+              ..getProfileData(),
           )
         ],
         child: BlocConsumer<ShopCubit, ShopStates>(

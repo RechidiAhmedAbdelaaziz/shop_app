@@ -3,6 +3,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/Layout/Shop_Cubit/shop_cubit.dart';
 import 'package:shop_app/Layout/homeScreen.dart';
 import 'package:shop_app/Modules/Login/LoginCubit/loginCubit.dart';
 import 'package:shop_app/Modules/Login/LoginCubit/loginStates.dart';
@@ -26,11 +27,10 @@ class LoginScreen extends StatelessWidget {
               CacheHelper.saveData(
                       key: 'token', value: state.loginModel.data!.token!)
                   .then((value) {
+                ShopCubit.get(context).currentIndex = 0;
                 replaceWith(context: context, widget: const HomeScreen());
               });
-            } else {
-              
-            }
+            } else {}
           }
         },
         builder: (context, state) {

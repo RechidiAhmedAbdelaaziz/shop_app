@@ -11,6 +11,7 @@ import 'package:shop_app/Moldels/categories_model.dart';
 import 'package:shop_app/Moldels/change_favModel.dart';
 import 'package:shop_app/Moldels/favoritesModel.dart';
 import 'package:shop_app/Moldels/home_models.dart';
+import 'package:shop_app/Moldels/login_model.dart';
 import 'package:shop_app/Shared/Compenents/constants.dart';
 import 'package:shop_app/Shared/Network/Remote/diohelper.dart';
 import 'package:shop_app/Shared/Network/end_points.dart';
@@ -33,8 +34,7 @@ class ShopCubit extends Cubit<ShopStates> {
   }
 
   HomeModel? homeModel;
-
-  void getHomeData({String? token}) {
+  void getHomeData() {
     emit(LoadingHomeDataState());
     DioHelper.getData(
       token: token,
@@ -103,6 +103,18 @@ class ShopCubit extends Cubit<ShopStates> {
     }).catchError((error) {
       print(error.toString());
       emit(ErorrCategoriesDataState(error.toString()));
+    });
+  }
+
+  late LoginModel user;
+  void getProfileData() {
+    emit(LoadingProfileDataState());
+    DioHelper.getData(url: PROFILE, token: token).then((value) {
+      user = LoginModel.fromJson(value.data);
+      emit(SuccessProfileDataState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErorrProfileDataState(error.toString()));
     });
   }
 }
