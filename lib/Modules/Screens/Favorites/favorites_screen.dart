@@ -26,8 +26,8 @@ class FavoritesScreen extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             separatorBuilder: (context, index) => myDivider(),
             itemBuilder: (context, index) =>
-                buildFavItem(cubit.favoritesModel.data.products[index], context),
-            itemCount: cubit.favoritesModel.data.products.length,
+                buildFavItem(cubit.favoritesModel!.data.products[index], context),
+            itemCount: cubit.favoritesModel!.data.products.length,
           ),
           fallback: (context) => const Center(
             child: CircularProgressIndicator(),

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/Modules/Register/RegisterCubit/registerStates.dart';
 import 'package:shop_app/Moldels/login_model.dart';
@@ -31,8 +33,10 @@ class RegisterCubit extends Cubit<RegisterStates> {
       },
     ).then((value) {
       registerModel = LoginModel.fromJson(value.data);
+
       emit(RegisterSuccessState(registerModel));
     }).catchError((error) {
+      // ignore: avoid_print
       print('Error is ${error.toString()}');
       emit(RegisterErrorState(error.toString()));
     });

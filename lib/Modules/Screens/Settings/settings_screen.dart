@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/Layout/Shop_Cubit/shop_cubit.dart';
 import 'package:shop_app/Layout/Shop_Cubit/shop_states.dart';
-import 'package:shop_app/Modules/Login/LoginCubit/loginCubit.dart';
-import 'package:shop_app/Modules/Register/RegisterCubit/registerCubit.dart';
 import 'package:shop_app/Shared/Compenents/compenents.dart';
 import 'package:shop_app/Shared/Compenents/constants.dart';
+import 'package:shop_app/Shared/Styles/colors.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -24,7 +23,7 @@ class SettingsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var model = ShopCubit.get(context).user;
-        nameController.text = (model.data!.name)!;
+        nameController.text = (model!.data!.name)!;
         emailController.text = (model.data!.email)!;
         phoneController.text = (model.data!.phone)!;
 
@@ -110,8 +109,10 @@ class SettingsScreen extends StatelessWidget {
                         );
                       },
                       text: 'UPDATE'),
-                  fallback: (context) =>
-                      const Center(child: CircularProgressIndicator()),
+                  fallback: (context) => const Center(
+                      child: LinearProgressIndicator(
+                    color: defaultColor,
+                  )),
                 ),
                 const SizedBox(
                   height: 10,

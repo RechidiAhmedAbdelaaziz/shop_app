@@ -1,3 +1,14 @@
 {
-    "cmake.sourceDirectory": "/home/ahmed/StudioProjects/FlutterProjects/shop_app/linux"
+    "cmake.sourceDirectory": "/home/ahmed/StudioProjects/FlutterProjects/shop_app/linux",
+    "files.associations": {
+        "optional": "c",
+        "ratio": "c",
+        "system_error": "c",
+        "array": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "cstdlib": "c"
+    }
 }

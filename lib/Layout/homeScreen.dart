@@ -12,38 +12,45 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ShopCubit, ShopStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = ShopCubit.get(context);
-        return Scaffold(
-          appBar: AppBar(
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    navigateTo(context: context, widget: const SearchScreen());
-                  },
-                  icon: const Icon(Icons.search))
-            ],
-          ),
-          body: cubit.bottomScreens[cubit.currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: cubit.currentIndex,
-            onTap: (value) {
-              cubit.changeBottomScreen(value);
-            },
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.apps), label: 'Categories'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite), label: 'Favorites'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.settings), label: 'Settings'),
-            ],
-          ),
-        );
-      },
+    return BlocProvider(
+      create: (context) => ShopCubit()
+              ..getHomeData()
+              ..getCategoriesData()
+              ..getProfileData(),
+          
+      child: BlocConsumer<ShopCubit, ShopStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var cubit = ShopCubit.get(context);
+          return Scaffold(
+            appBar: AppBar(
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      navigateTo(context: context, widget: const SearchScreen());
+                    },
+                    icon: const Icon(Icons.search))
+              ],
+            ),
+            body: cubit.bottomScreens[cubit.currentIndex],
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: cubit.currentIndex,
+              onTap: (value) {
+                cubit.changeBottomScreen(value);
+              },
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.apps), label: 'Categories'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.favorite), label: 'Favorites'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.settings), label: 'Settings'),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:shop_app/Moldels/login_model.dart';
 
 abstract class RegisterStates {}

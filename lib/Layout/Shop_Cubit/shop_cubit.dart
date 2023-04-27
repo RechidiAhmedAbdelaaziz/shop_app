@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/Layout/Shop_Cubit/shop_states.dart';
@@ -21,12 +19,12 @@ class ShopCubit extends Cubit<ShopStates> {
 
   static ShopCubit get(context) => BlocProvider.of(context);
 
-     bool isShown = true;
+  bool isShown = true;
   void showPass() {
     isShown = !isShown;
     emit(PassVisibilityState());
   }
-  
+
   int currentIndex = 0;
   List<Widget> bottomScreens = [
     const ProductsScreen(),
@@ -61,7 +59,7 @@ class ShopCubit extends Cubit<ShopStates> {
   }
 
   Map<int, bool> favorites = {};
-  late ChangeFavModel changeFavModel;
+  ChangeFavModel? changeFavModel;
   void changeFav({
     required int id,
   }) {
@@ -75,12 +73,12 @@ class ShopCubit extends Cubit<ShopStates> {
       token: token,
     ).then((value) {
       changeFavModel = ChangeFavModel.fromJson(value.data);
-      if (!changeFavModel.status) {
-        favorites[id] = changeFavModel.status;
+      if (!changeFavModel!.status == true) {
+        favorites[id] = changeFavModel!.status;
       } else {
         getFavoritesData();
       }
-      emit(SuccessChangeFavState(changeFavModel));
+      emit(SuccessChangeFavState(changeFavModel!));
     }).catchError((error) {
       favorites[id] = !favorites[id]!;
       print(error.toString());
@@ -88,7 +86,7 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
-  late FavoritesModel favoritesModel;
+  FavoritesModel? favoritesModel;
   void getFavoritesData() {
     emit(LoadingFavoritesDataState());
     DioHelper.getData(url: FAVORITES, token: token).then((value) {
@@ -97,6 +95,25 @@ class ShopCubit extends Cubit<ShopStates> {
     }).catchError((error) {
       print(error.toString());
       emit(ErorrFavoritesDataState(error.toString()));
+    });
+  }
+
+  SearchModel? searchModel;
+  void getSearchData({required String text}) {
+    emit(LoadingSearchDataState());
+    DioHelper.postData(
+       
+        url: PRODUCT_SEARCH,
+        token: token,
+        data: {
+          'text': text,
+        }).then((value) {
+      searchModel = SearchModel.fromJson(value.data);
+      
+      emit(SuccessSearchDataState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ErorrSearchDataState(error.toString()));
     });
   }
 
@@ -112,7 +129,7 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
-  late LoginModel user;
+  LoginModel? user;
   void getProfileData() {
     emit(LoadingProfileDataState());
     DioHelper.getData(url: PROFILE, token: token).then((value) {
@@ -143,7 +160,7 @@ class ShopCubit extends Cubit<ShopStates> {
     ).then((value) {
       user = LoginModel.fromJson(value.data);
       userPassword = password;
-      emit(SuccessUpdateProfileDataState(user));
+      emit(SuccessUpdateProfileDataState(user!));
     }).catchError((error) {
       print(error.toString());
       emit(ErorrUpdateProfileDataState(error.toString()));
